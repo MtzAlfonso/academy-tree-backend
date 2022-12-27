@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  name        String
+  lastname    String
+  avatar      String?
+  credential  String?
+  cv          String?
+  email       String       @unique
+  password    String
+  roles       Role[]       @default([ALUMN])
+  isActive    Boolean      @default(true)
+  professor   User?        @relation("professor", fields: [professorId], references: [id])
+  professorId String?
+  alumns      User[]       @relation("professor")
+  userCourse  UserCourse[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  image       String?
+  career      Career       @relation(fields: [careerId], references: [id])
+  careerId    String
+  price       Float
+  userCourse  UserCourse[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model UserCourse {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId   String
+  credential String?
+  image      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Career {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  courses     Course[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  ALUMN
+  PROFESSOR
+}
