@@ -16,8 +16,9 @@ async function main() {
             name: 'Juan',
             lastname: 'Perez',
             email: 'juanperez@gmail.com',
+            avatar: 'https://xsgames.co/randomusers/avatar.php?g=pixel&seed=1',
             password: bcrypt.hashSync('Test1234@', 10),
-            roles: [Role.ALUMN],
+            roles: [Role.PROFESSOR],
           },
         },
         course: {
@@ -42,8 +43,9 @@ async function main() {
             name: 'John',
             lastname: 'Doe',
             email: 'johndoe@gmail.com',
+            avatar: 'https://xsgames.co/randomusers/avatar.php?g=male&seed=2',
             password: bcrypt.hashSync('Test1234@', 10),
-            roles: [Role.ALUMN],
+            roles: [Role.PROFESSOR],
           },
         },
         course: {
@@ -68,8 +70,9 @@ async function main() {
             name: 'Ana',
             lastname: 'Gomez',
             email: 'anagomez@gmail.com',
+            avatar: 'https://xsgames.co/randomusers/avatar.php?g=female&seed=3',
             password: bcrypt.hashSync('Test1234@', 10),
-            roles: [Role.ALUMN],
+            roles: [Role.PROFESSOR],
           },
         },
         course: {

@@ -22,6 +22,55 @@ export class UsersService {
     });
   }
 
+  async findAllProfessors() {
+    const professors = await this.prisma.user.findMany({
+      where: { roles: { hasSome: ['PROFESSOR'] } },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        lastname: true,
+        roles: true,
+        isActive: true,
+        avatar: true,
+        cv: true,
+        alumns: true,
+        credential: true,
+        userCourse: {
+          select: {
+            course: {
+              include: {
+                career: true,
+              },
+            },
+          },
+        },
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return professors.map((professor) => {
+      const { userCourse, ...rest } = professor;
+      return {
+        ...rest,
+        career: userCourse.map((userCourse) => userCourse.course.career)[0],
+        courses: userCourse.map((userCourse) => {
+          const { course } = userCourse;
+          delete course.career;
+          return course;
+        }),
+      };
+    });
+  }
+
+  async findAllAlumns(): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: { roles: { hasSome: ['ALUMN'] } },
+      include: { professor: true },
+    });
+  }
+
   async findOne(id: string): Promise<User> {
     return this.prisma.user.findUnique({
       where: { id },

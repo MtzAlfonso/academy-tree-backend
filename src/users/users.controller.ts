@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { Role } from '@prisma/client';
 import { Auth } from 'src/auth/decorators';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,9 +23,19 @@ export class UsersController {
   }
 
   @Get()
-  @Auth(Role.ADMIN)
+  // @Auth(Role.ADMIN)
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('professors')
+  findAllProfessors() {
+    return this.usersService.findAllProfessors();
+  }
+
+  @Get('alumns')
+  findAllAlumns() {
+    return this.usersService.findAllAlumns();
   }
 
   @Get(':id')

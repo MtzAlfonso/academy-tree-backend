@@ -14,7 +14,16 @@ export class CoursesService {
   }
 
   async findAll(): Promise<Course[]> {
-    return this.prisma.course.findMany();
+    return this.prisma.course.findMany({
+      include: {
+        userCourse: {
+          include: {
+            user: true,
+          },
+        },
+        career: true,
+      },
+    });
   }
 
   findOne(id: number) {
